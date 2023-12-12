@@ -15,7 +15,6 @@
 
 // FUNCTION
 void clearScreen();
-
 void selamatDatang();
 void cekRekening();
 void daftarMenu();
@@ -24,16 +23,16 @@ void transaksiLain();
 void penarikanSaldo();
 void cekSaldo();
 void transferSaldo();
-
 void keluar();
 
 
 // GLOBAL Variabel
-FILE *rek; // Pointer ke File
-FILE *rekTransfer; // Pointer ke File
+FILE *rek; // Pointer ke File rekening
+FILE *rekTransfer; // Pointer ke File rekening transfer
 
-char nomorRekening[16];
-char pin[8];
+char nomorRekening[16]; // input nomor rekening
+char fileRekening[20]; // file_rekening.txt
+char pin[8]; // input pin
 
 // STRUCT
 typedef struct {
@@ -72,7 +71,6 @@ void selamatDatang(){
 }
 
 void cekRekening(){
-    char fileRekening[20];
     printf("                      MASUKKAN NOMOR REKENING\n\n\t\t\t  ");
     scanf("%16s",nomorRekening);
     strcpy(fileRekening, nomorRekening);
@@ -92,7 +90,6 @@ void cekRekening(){
         fread(&rekening, sizeof(rekening), 1, rek);
 
         if(strcmp(rekening.nomorRekening, nomorRekening) == 0 && strcmp(rekening.pin, pin) == 0){
-            fread(&rekening, sizeof(rekening), 1, rek);
             daftarMenu(); 
         } else {
             clearScreen();
@@ -204,7 +201,7 @@ void transaksiLain(){
 }
 
 void keluar(){
-    rek = fopen(nomorRekening, "wt");
+    rek = fopen(fileRekening, "wt");
     fwrite(&rekening, sizeof(rekening), 1, rek);
     fclose(rek);
     clearScreen();
