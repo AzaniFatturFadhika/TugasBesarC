@@ -73,10 +73,8 @@ void selamatDatang(){
 
 void cekRekening(){
     char fileRekening[20];
-    printf("                      MASUKKAN NOMOR REKENING");
-    printf("\n\n\t\t\t   ");
-    fgets(nomorRekening, sizeof(nomorRekening), stdin);
-    nomorRekening[strcspn(nomorRekening, "\n")] = '\0'; // digunakan untuk menghapus karakter baris baru (\n) dari string nomorRekening
+    printf("                      MASUKKAN NOMOR REKENING\n\n\t\t\t  ");
+    scanf("%16s",nomorRekening);
     strcpy(fileRekening, nomorRekening);
     strcat(fileRekening, ".txt");
     rek = fopen(fileRekening, "rt");
@@ -89,11 +87,8 @@ void cekRekening(){
         selamatDatang();
     } else {
         clearScreen();
-        printf("                       Masukkan PIN");
-        printf("\n\n\t\t\t  ");
-        // gets(pin);
-        fgets(pin, sizeof(pin), stdin);
-        pin[strcspn(pin, "\n")] = '\0'; // digunakan untuk menghapus karakter baris baru (\n) dari string pin
+        printf("                       Masukkan PIN\n\n\t\t\t");
+        scanf("%8s",pin);
         fread(&rekening, sizeof(rekening), 1, rek);
 
         if(strcmp(rekening.nomorRekening, nomorRekening) == 0 && strcmp(rekening.pin, pin) == 0){
@@ -186,7 +181,8 @@ void prosesMenu(int input){
 
 void cekSaldo(){
     clearScreen();
-    printf("\n\n               SISA SALDO ANDA\n\n");
+    printf("\n\n              HALO %s\n\n",rekening.namaRekening);
+    printf("               SISA SALDO ANDA\n\n");
     printf("                 "); printf("Rp %lu",rekening.saldoRekening);
     transaksiLain();
 }
@@ -258,55 +254,62 @@ void transferSaldo(){
 
     printf("                      MASUKKAN NOMOR REKENING");
     printf("\n\n\t\t\t   ");
-    // gets(nomorRekeningTujuan);
-    fgets(nomorRekeningTujuan, sizeof(nomorRekeningTujuan), stdin);
-    nomorRekeningTujuan[strcspn(nomorRekeningTujuan, "\n")] = '\0'; // digunakan untuk menghapus karakter baris baru (\n) dari string nomorRekeningTujuan
-    strcat(nomorRekeningTujuan, ".txt");
-    rekTransfer = fopen(nomorRekeningTujuan, "rt");
+    scanf("%16s",nomorRekeningTujuan);
 
-    if(rekTransfer == NULL){
+    if(strcmp(nomorRekening, nomorRekeningTujuan) == 0){
         clearScreen();
-        fclose(rek); 
-        printf("\n  Nomor Rekening Tidak Ditemukan\n\n");
+        fclose(rekTransfer); 
+        printf("\n  Tidak DAPAT TRANSFER KE REKENING SENDIRI\n\n");
         transferSaldo();
     } else {
-        fread(&rekeningTransfer, sizeof(rekeningTransfer), 1, rekTransfer);
+        strcat(nomorRekeningTujuan, ".txt");
+        rekTransfer = fopen(nomorRekeningTujuan, "rt");
+        if(rekTransfer == NULL){
+            clearScreen();
+            fclose(rekTransfer); 
+            printf("\n  Nomor Rekening Tidak Ditemukan\n\n");
+            transferSaldo();
+        }else{
+            clearScreen();
+            fread(&rekeningTransfer, sizeof(rekeningTransfer), 1, rekTransfer);
+            printf("\n         REKENING TUJUAN : %s\n\n",rekeningTransfer.namaRekening);
 
-        printf("\n\n           MASUKKAN NOMINAL TRANSFER\n\n");
-        printf("                  Rp ");
-        scanf("%lu",&nominal);
-        printf("\n\n    1. BENAR          2. ULANGI         3. KEMBALI KE MENU");
-        printf("\n\n\tPILIHAN : ");
+            printf("\n           MASUKKAN NOMINAL TRANSFER\n\n");
+            printf("                  Rp ");
+            scanf("%lu",&nominal);
+            printf("\n\n    1. BENAR          2. ULANGI         3. KEMBALI KE MENU");
+            printf("\n\n\tPILIHAN : ");
 
-        scanf("%d", &input);
-        clearScreen();
+            scanf("%d", &input);
+            clearScreen();
 
-        switch (input){
-            case 1:
-                if(rekening.saldoRekening > nominal){
-                    rekening.saldoRekening = rekening.saldoRekening - nominal;
-                    rekeningTransfer.saldoRekening = rekeningTransfer.saldoRekening + nominal;
+            switch (input){
+                case 1:
+                    if(rekening.saldoRekening > nominal){
+                        rekening.saldoRekening = rekening.saldoRekening - nominal;
+                        rekeningTransfer.saldoRekening = rekeningTransfer.saldoRekening + nominal;
 
-                    rekTransfer = fopen(nomorRekeningTujuan, "wt");
-                    
-                    fwrite(&rekeningTransfer, sizeof(rekeningTransfer), 1, rekTransfer);
-                    fclose(rekTransfer);
+                        rekTransfer = fopen(nomorRekeningTujuan, "wt");
 
-                    printf("\t\t     TRASNFER SEJUMLAH ");
-                    printf("%li",nominal);
-                    printf(" BERHASIL");
-                    transaksiLain();
+                        fwrite(&rekeningTransfer, sizeof(rekeningTransfer), 1, rekTransfer);
+                        fclose(rekTransfer);
+
+                        printf("\t\t     TRASNFER SEJUMLAH ");
+                        printf("%li",nominal);
+                        printf(" BERHASIL");
+                        transaksiLain();
+                        break;
+                    }else{
+                        printf("\t\t  MAAF TRANSAKSI GAGAL");
+                        transaksiLain();
                     break;
-                }else{
-                    printf("\t\t  MAAF TRANSAKSI GAGAL");
-                    transaksiLain();
-                break;
-                }
-            case 2: 
-                transferSaldo();
-                break;
-            default:
-                daftarMenu();
+                    }
+                case 2: 
+                    transferSaldo();
+                    break;
+                default:
+                    daftarMenu();
+            }
         }
     }
 }
