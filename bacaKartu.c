@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(){
 
@@ -27,7 +28,6 @@ int main(){
 
     while(fread(&rekening, sizeof(rekening), 1, pf) == 1){
         i++;
-        printf("Balok %d\n",i);
         printf("Nomor   : %s\nNama     : %s\npin    : %s\nSaldo    : %li\n\n",
         rekening.nomorRekening,
         rekening.namaRekening,

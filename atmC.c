@@ -49,6 +49,7 @@ Rekening rekeningTransfer;
 // MAIN
 int main()
 {
+    clearScreen();
     selamatDatang();
 
     return 0;
@@ -57,11 +58,12 @@ int main()
 // FUNCTION CODE
 void clearScreen(){
     #ifdef _WIN32
-        system("cls");
+        system("cls"); // Windows
     #else
-        system("clear");
+        system("clear"); // Linux
     #endif
 }
+
 void selamatDatang(){
     printf("                          SELAMAT DATANG\n");
     printf("                                DI\n");
@@ -74,34 +76,33 @@ void cekRekening(){
     printf("                      MASUKKAN NOMOR REKENING");
     printf("\n\n\t\t\t   ");
     fgets(nomorRekening, sizeof(nomorRekening), stdin);
-    nomorRekening[strcspn(nomorRekening, "\n")] = '\0';
+    nomorRekening[strcspn(nomorRekening, "\n")] = '\0'; // digunakan untuk menghapus karakter baris baru (\n) dari string nomorRekening
     strcpy(fileRekening, nomorRekening);
     strcat(fileRekening, ".txt");
     rek = fopen(fileRekening, "rt");
-    
        
     if(rek == NULL){
         clearScreen(); 
         
         printf("\n                  Nomor Rekening Tidak Ditemukan\n\n");
         fclose(rek);
-        memset(nomorRekening, '\0', sizeof(nomorRekening));
-        // selamatDatang();
+        selamatDatang();
     } else {
         clearScreen();
-        printf("%s",nomorRekening);
-        printf("%s",fileRekening);
         printf("                       Masukkan PIN");
         printf("\n\n\t\t\t  ");
-        gets(pin);
+        // gets(pin);
+        fgets(pin, sizeof(pin), stdin);
+        pin[strcspn(pin, "\n")] = '\0'; // digunakan untuk menghapus karakter baris baru (\n) dari string pin
         fread(&rekening, sizeof(rekening), 1, rek);
+
         if(strcmp(rekening.nomorRekening, nomorRekening) == 0 && strcmp(rekening.pin, pin) == 0){
             fread(&rekening, sizeof(rekening), 1, rek);
             daftarMenu(); 
         } else {
             clearScreen();
             fclose(rek);
-            printf("\n              Pin Yang Anda Masukkan Salah\n\n");
+            printf("\n                   Pin Yang Anda Masukkan Salah\n\n");
             selamatDatang();
         }
     }
@@ -137,10 +138,28 @@ void prosesMenu(int input){
             }
             transaksiLain();
             break; 
+        case 2 : 
+            if(rekening.saldoRekening >= 500000){
+                rekening.saldoRekening = rekening.saldoRekening - 500000; 
+                printf("    Penarikan Rp. 500.000  Berhasil");
+            }else{
+                printf(pesanGagalTarik);
+            }
+            transaksiLain();
+            break; 
         case 3:
             if(rekening.saldoRekening >= 200000){
                 rekening.saldoRekening = rekening.saldoRekening - 200000;
                 printf("    Penarikan Rp. 200.000  Berhasil"); 
+            }else{
+                printf(pesanGagalTarik);
+            }
+            transaksiLain();
+            break; 
+        case 4:
+            if(rekening.saldoRekening >= 1000000){
+                rekening.saldoRekening = rekening.saldoRekening - 1000000;
+                printf("    Penarikan Rp. 1.000.000  Berhasil"); 
             }else{
                 printf(pesanGagalTarik);
             }
@@ -156,24 +175,6 @@ void prosesMenu(int input){
         case 7:
             cekSaldo();
             break;
-        case 2 : 
-            if(rekening.saldoRekening >= 500000){
-                rekening.saldoRekening = rekening.saldoRekening - 500000; 
-                printf("    Penarikan Rp. 500.000  Berhasil");
-            }else{
-                printf(pesanGagalTarik);
-            }
-            transaksiLain();
-            break; 
-        case 4:
-            if(rekening.saldoRekening >= 1000000){
-                rekening.saldoRekening = rekening.saldoRekening - 1000000;
-                printf("    Penarikan Rp. 1.000.000  Berhasil"); 
-            }else{
-                printf(pesanGagalTarik);
-            }
-            transaksiLain();
-            break; 
         case 0:
             keluar();
             break;
@@ -210,7 +211,6 @@ void keluar(){
     rek = fopen(nomorRekening, "wt");
     fwrite(&rekening, sizeof(rekening), 1, rek);
     fclose(rek);
-
     clearScreen();
     selamatDatang();
 }
@@ -258,7 +258,9 @@ void transferSaldo(){
 
     printf("                      MASUKKAN NOMOR REKENING");
     printf("\n\n\t\t\t   ");
-    gets(nomorRekeningTujuan);
+    // gets(nomorRekeningTujuan);
+    fgets(nomorRekeningTujuan, sizeof(nomorRekeningTujuan), stdin);
+    nomorRekeningTujuan[strcspn(nomorRekeningTujuan, "\n")] = '\0'; // digunakan untuk menghapus karakter baris baru (\n) dari string nomorRekeningTujuan
     strcat(nomorRekeningTujuan, ".txt");
     rekTransfer = fopen(nomorRekeningTujuan, "rt");
 
@@ -308,78 +310,3 @@ void transferSaldo(){
         }
     }
 }
-
-// void inputRekening(){
-//     int input;
-//     unsigned long int rekening;
-
-//     clearScreen();
-//     printf("\n\n                    MASUKKAN NOMOR REKENING\n\n");
-//     printf("                         "); scanf("%lu",&rekening);
-//     printf("\n\n                  1. BENAR\n\n                  2. KELUAR\n\n                  3. KEMBALI KE MENU");
-//     printf("\n\n\tPILIHAN : ");
-//     scanf("%d", &input);
-
-//     switch (input){
-//         case 1:
-//             if(rekening != rek){
-//                 temp(&tmp2, rekening);
-//                 if(rekening == rek1)
-//                         transaksiTransferSaldo();
-//                 else if(rekening == rek2)
-//                         transaksiTransferSaldo();
-//                 else
-//                 printf("\t\t      REKENING TIDAK TERDAFTAR");
-//                 inputRekening();break;
-//             }else{
-//                 printf("\tTIDAK DAPAT MELAKUKAN TRANSFER PADA REKENING PRIBADI");
-//                 inputRekening();
-//             }
-//             break;
-//         case 2:
-//             keluar();
-//             break;
-//         default:
-//             daftarMenu();
-//             break;
-//     }
-// }
-
-// void transaksiTransferSaldo(){
-//     int input;
-//     clearScreen();
-//     if(tmp2 == rek1){
-//         printf("REKENING ANDA SENDIRI");
-//     }else if(tmp2 == rek2){
-//         printf("\n\n\t\t      TUJUAN TRANSFER\n\n");
-//         printf("\t\tNAMA      : %s\n\n",akun2);
-//         printf("\t\tREKENING  : %lu\n\n", rek2);
-//         printf("\t\tNOMINAL   : Rp %lu\n\n", tmp);
-//     }
-
-//     printf("\n\n                  1. BENAR\n\n                  2. KELUAR\n\n                  3. KEMBALI KE MENU");
-//     printf("\n\n\tPILIHAN : "); scanf("%d",&input);
- 
-//     switch (input){
-//         case 1:
-//         clearScreen();
-//            if(tmp2 == rek1){
-//                 saldo = saldo - tmp; //Mengurangi saldo akun
-//                 saldo1 = saldo1 + tmp; //Menambah saldo akun tujuan
-//             }
-//            if(tmp2 == rek2){
-//                 saldo = saldo - tmp;
-//                 saldo2 = saldo2 + tmp;
-//             }
-
-//             printf("                            TRANSAKSI BERHASIL");
-//             transaksiLain();
-//             break;
-//         case 2:
-//             keluar();
-//             break;
-//         default:
-//             daftarMenu();
-//             break;
-//     }
-// }

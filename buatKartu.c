@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(){
 
     FILE *pf; // Pointer ke File
+    char nomorRekening[20];
 
     struct Rekening{
         char nomorRekening[16];
@@ -14,12 +16,13 @@ int main(){
 
     printf("Nomor  : ");
     gets(rekening.nomorRekening);
-    strcat(rekening.nomorRekening, ".txt");
-    pf = fopen(rekening.nomorRekening, "wt");
+    strcpy(nomorRekening, rekening.nomorRekening);
+    strcat(nomorRekening, ".txt");
+    pf = fopen(nomorRekening, "wt");
     printf("Nama   : ");
-    scanf("%s", &rekening.namaRekening);
+    scanf("%s", rekening.namaRekening);
     printf("Pin    : ");
-    scanf("%s", &rekening.pin);
+    scanf("%s", rekening.pin);
     printf("Saldo  : ");
     scanf("%li", &rekening.saldoRekening);
     fflush(stdin);      // Hapus penampung keyboard
