@@ -113,7 +113,7 @@ void daftarMenu(){
     printf("  1.  100.000                           2.  500.000\n");
     printf("  3.  200.000                           4.  1.000.000\n");
     printf("  5.  PENARIKAN JUMLAH LAIN             6.  TRANSFER\n");
-    printf("  7.  CEK SALDO                         8.  SETOR TUNAI\n\n\n");
+    printf("  7.  CEK SALDO\n\n\n");
 
     printf("  INPUT PILIHAN : ");
     scanf("%d", &input);
