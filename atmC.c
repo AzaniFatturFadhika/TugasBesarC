@@ -1,17 +1,11 @@
+// TUGAS BERSAR LOGIKA & ALGORITMA
+// NAMA  : AZANI FATTUR FADHIKA
+// NIM   : 4.33.23.1.05
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
-
-/*
-1. Fungsi Pengecekan nomor rekening + sandi
-2. Fungsi Penarikan Saldo Rekenig
-3. Fungsi Transfer
-4. Fungsi Setor Tunai
-5. Fungsi Cek Saldo
-6. Fungsi Cetak Struk
-7. Fungsi Konfirmasi Transaksi Lain
-*/ 
 
 // FUNCTION
 void clearScreen();
