@@ -36,15 +36,15 @@ char nomorRekening[16];
 char pin[8];
 
 // STRUCT
-struct Rekening{
+typedef struct {
     char nomorRekening[16];
     char namaRekening[50];
     char pin[8];
     unsigned long int saldoRekening;
-};
+} Rekening;
 
-struct Rekening rekening;
-struct Rekening rekeningTransfer;
+Rekening rekening;
+Rekening rekeningTransfer;
 
 // MAIN
 int main()
@@ -70,33 +70,40 @@ void selamatDatang(){
 }
 
 void cekRekening(){
+    char fileRekening[20];
     printf("                      MASUKKAN NOMOR REKENING");
     printf("\n\n\t\t\t   ");
-    gets(nomorRekening);
-    strcat(nomorRekening, ".txt");
-    rek = fopen(nomorRekening, "rt");
-
+    fgets(nomorRekening, sizeof(nomorRekening), stdin);
+    nomorRekening[strcspn(nomorRekening, "\n")] = '\0';
+    strcpy(fileRekening, nomorRekening);
+    strcat(fileRekening, ".txt");
+    rek = fopen(fileRekening, "rt");
+    
+       
     if(rek == NULL){
-        clearScreen();;
+        clearScreen(); 
+        
+        printf("\n                  Nomor Rekening Tidak Ditemukan\n\n");
         fclose(rek);
-        printf("\n           Nomor Rekening Tidak Ditemukan\n\n");
-        selamatDatang();
+        memset(nomorRekening, '\0', sizeof(nomorRekening));
+        // selamatDatang();
     } else {
         clearScreen();
+        printf("%s",nomorRekening);
+        printf("%s",fileRekening);
         printf("                       Masukkan PIN");
-        printf("\n\n\t\t\t     ");
+        printf("\n\n\t\t\t  ");
         gets(pin);
-    }
-
-    fread(&rekening, sizeof(rekening), 1, rek);
-    if(strcmp(rekening.nomorRekening, nomorRekening) == 0 && strcmp(rekening.pin, pin) == 0){
         fread(&rekening, sizeof(rekening), 1, rek);
-        daftarMenu(); 
-    } else {
-        clearScreen();
-        fclose(rek);
-        printf("\n              Pin Yang Anda Masukkan Salah\n\n");
-        selamatDatang();
+        if(strcmp(rekening.nomorRekening, nomorRekening) == 0 && strcmp(rekening.pin, pin) == 0){
+            fread(&rekening, sizeof(rekening), 1, rek);
+            daftarMenu(); 
+        } else {
+            clearScreen();
+            fclose(rek);
+            printf("\n              Pin Yang Anda Masukkan Salah\n\n");
+            selamatDatang();
+        }
     }
 }
 
@@ -257,8 +264,8 @@ void transferSaldo(){
 
     if(rekTransfer == NULL){
         clearScreen();
-        fclose(rek);
-        printf("\n           Nomor Rekening Tidak Ditemukan\n\n");
+        fclose(rek); 
+        printf("\n  Nomor Rekening Tidak Ditemukan\n\n");
         transferSaldo();
     } else {
         fread(&rekeningTransfer, sizeof(rekeningTransfer), 1, rekTransfer);
