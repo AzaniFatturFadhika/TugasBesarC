@@ -11,8 +11,7 @@
 // MACRO
 #define kurangiRekening(nominal) (rekening.saldoRekening = rekening.saldoRekening - nominal) // Pengurangan Saldo
 
-// FUNCTION
-void clearScreen();
+// FUNCTIONs
 void selamatDatang();
 void cekRekening();
 void daftarMenu();
