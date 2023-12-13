@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void clearScreen(){
     #ifdef _WIN32
