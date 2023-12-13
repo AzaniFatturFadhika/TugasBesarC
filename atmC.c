@@ -247,7 +247,7 @@ void transferSaldo(){
     if(strcmp(nomorRekening, nomorRekeningTujuan) == 0){
         clearScreen();
         fclose(rekTransfer); 
-        printf("\n  Tidak DAPAT TRANSFER KE REKENING SENDIRI\n\n");
+        printf("\n      Tidak Dapat Mentransfer ke Rekening Sendiri\n\n");
         transferSaldo();
     } else {
         strcat(nomorRekeningTujuan, ".txt");
@@ -255,7 +255,7 @@ void transferSaldo(){
         if(rekTransfer == NULL){
             clearScreen();
             fclose(rekTransfer); 
-            printf("\n  Nomor Rekening Tidak Ditemukan\n\n");
+            printf("\n        Nomor Rekening Tidak Ditemukan\n\n");
             transferSaldo();
         }else{
             clearScreen();
