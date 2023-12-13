@@ -6,6 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "clrscr.h"
+
+// MACRO
+#define kurangiRekening(nominal) (rekening.saldoRekening = rekening.saldoRekening - nominal) // Pengurangan Saldo
+
 // FUNCTION
 void clearScreen();
 void selamatDatang();
@@ -48,13 +53,6 @@ int main()
 }
 
 // FUNCTION CODE
-void clearScreen(){
-    #ifdef _WIN32
-        system("cls"); // Windows
-    #else
-        system("clear"); // Linux
-    #endif
-}
 
 void selamatDatang(){
     printf("                          SELAMAT DATANG\n");
@@ -116,7 +114,7 @@ void prosesMenu(int input){
     switch(input){
         case 1 : 
             if(rekening.saldoRekening >= 100000){
-                rekening.saldoRekening = rekening.saldoRekening - 100000; 
+                kurangiRekening(100000);
                 printf("    Penarikan Rp. 100.000  Berhasil");
             }else{
                 printf(pesanGagalTarik);
@@ -125,7 +123,7 @@ void prosesMenu(int input){
             break; 
         case 2 : 
             if(rekening.saldoRekening >= 500000){
-                rekening.saldoRekening = rekening.saldoRekening - 500000; 
+                kurangiRekening(500000);
                 printf("    Penarikan Rp. 500.000  Berhasil");
             }else{
                 printf(pesanGagalTarik);
@@ -134,7 +132,7 @@ void prosesMenu(int input){
             break; 
         case 3:
             if(rekening.saldoRekening >= 200000){
-                rekening.saldoRekening = rekening.saldoRekening - 200000;
+                kurangiRekening(200000);
                 printf("    Penarikan Rp. 200.000  Berhasil"); 
             }else{
                 printf(pesanGagalTarik);
@@ -143,7 +141,7 @@ void prosesMenu(int input){
             break; 
         case 4:
             if(rekening.saldoRekening >= 1000000){
-                rekening.saldoRekening = rekening.saldoRekening - 1000000;
+                kurangiRekening(1000000);
                 printf("    Penarikan Rp. 1.000.000  Berhasil"); 
             }else{
                 printf(pesanGagalTarik);
