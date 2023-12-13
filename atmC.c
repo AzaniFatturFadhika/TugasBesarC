@@ -72,8 +72,8 @@ void cekRekening(){
         clearScreen(); 
         
         printf("\n                  Nomor Rekening Tidak Ditemukan\n\n");
-        fclose(rek);
         selamatDatang();
+        
     } else {
         clearScreen();
         printf("                       Masukkan PIN\n\n\t\t\t");
