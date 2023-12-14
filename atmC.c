@@ -16,10 +16,10 @@ void selamatDatang();
 void cekRekening();
 void daftarMenu();
 void prosesMenu(int input);
-void transaksiLain();
-void penarikanSaldo();
 void cekSaldo();
+void penarikanSaldo();
 void transferSaldo();
+void transaksiLain();
 void keluar();
 
 
@@ -163,7 +163,6 @@ void prosesMenu(int input){
         default :
             daftarMenu();
     }
-
 }
 
 void cekSaldo(){
@@ -273,7 +272,7 @@ void transferSaldo(){
             switch (input){
                 case 1:
                     if(rekening.saldoRekening > nominal){
-                        rekening.saldoRekening = rekening.saldoRekening - nominal;
+                        kurangiRekening(nominal);
                         rekeningTransfer.saldoRekening = rekeningTransfer.saldoRekening + nominal;
 
                         rekTransfer = fopen(nomorRekeningTujuan, "wt");
