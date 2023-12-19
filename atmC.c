@@ -271,7 +271,7 @@ void transferSaldo(){
 
             switch (input){
                 case 1:
-                    if(rekening.saldoRekening > nominal){
+                    if(rekening.saldoRekening >= nominal){
                         kurangiRekening(nominal);
                         rekeningTransfer.saldoRekening = rekeningTransfer.saldoRekening + nominal;
 
